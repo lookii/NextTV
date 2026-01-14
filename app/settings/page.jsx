@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useSettingsStore } from "@/store/useSettingsStore";
+import {useState} from "react";
+import {useSettingsStore} from "@/store/useSettingsStore";
 
 const SourceItem = ({
   source,
@@ -19,14 +19,14 @@ const SourceItem = ({
 
   return (
     <div
-      className={`group flex items-center justify-between p-4 bg-white border rounded-2xl hover:shadow-card transition-all duration-200 ${
+      className={`group flex flex-col md:flex-row md:items-center justify-between p-3 md:p-4 bg-white border rounded-2xl hover:shadow-card transition-all duration-200 gap-3 md:gap-4 ${
         source.enabled
           ? "border-blue-100 hover:border-blue-200"
           : "border-gray-100 hover:border-gray-200"
       }`}
     >
-      <div className="flex items-center gap-4 flex-1 min-w-0">
-        <div className="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+      <div className="flex items-center gap-2 md:gap-4 flex-1 min-w-0 overflow-hidden">
+        <div className="relative inline-block w-12 shrink-0 align-middle select-none transition duration-200 ease-in">
           <input
             type="checkbox"
             name={`toggle-${source.id}`}
@@ -46,62 +46,66 @@ const SourceItem = ({
             }`}
           ></label>
         </div>
-        <div className="flex flex-col min-w-0">
-          <span className="font-bold text-gray-900 text-lg truncate">
+        <div className="flex flex-col min-w-0 flex-1 overflow-hidden">
+          <span className="font-bold text-gray-900 text-sm md:text-lg truncate">
             {source.name}
           </span>
-          <span className="text-sm text-gray-500 truncate font-mono">
+          <span className="text-xs md:text-sm text-gray-500 truncate font-mono">
             {source.url}
           </span>
         </div>
       </div>
-      <div className="flex items-center gap-2 pl-4">
+      <div className="flex items-center gap-1 md:gap-2 md:pl-4 justify-end md:justify-start shrink-0">
         <button
           onClick={() => onMoveUp(source.id)}
           disabled={!canMoveUp}
-          className={`p-2 rounded-full transition-all duration-300 ${
+          className={`min-h-[44px] w-10 md:w-auto p-2 rounded-full transition-all duration-300 ${
             canMoveUp
               ? "text-gray-400 hover:text-gray-600 hover:bg-gray-100 cursor-pointer"
               : "text-gray-200 cursor-not-allowed"
           }`}
+          aria-label="向上移动"
         >
-          <span className="material-symbols-outlined text-[20px]">
+          <span className="material-symbols-outlined text-[18px] md:text-[20px]">
             arrow_upward
           </span>
         </button>
         <button
           onClick={() => onMoveDown(source.id)}
           disabled={!canMoveDown}
-          className={`p-2 rounded-full transition-all duration-300 ${
+          className={`min-h-[44px] w-10 md:w-auto p-2 rounded-full transition-all duration-300 ${
             canMoveDown
               ? "text-gray-400 hover:text-gray-600 hover:bg-gray-100 cursor-pointer"
               : "text-gray-200 cursor-not-allowed"
           }`}
+          aria-label="向下移动"
         >
-          <span className="material-symbols-outlined text-[20px]">
+          <span className="material-symbols-outlined text-[18px] md:text-[20px]">
             arrow_downward
           </span>
         </button>
         <button
           onClick={() => onEdit(source)}
-          className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all duration-300 cursor-pointer"
+          className="min-h-[44px] w-10 md:w-auto p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all duration-300 cursor-pointer"
+          aria-label="编辑"
         >
-          <span className="material-symbols-outlined text-[20px]">
+          <span className="material-symbols-outlined text-[18px] md:text-[20px]">
             edit_square
           </span>
         </button>
         <button
           onClick={() => onDelete(source.id)}
-          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-all duration-300 cursor-pointer"
+          className="min-h-[44px] w-10 md:w-auto p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-all duration-300 cursor-pointer"
+          aria-label="删除"
         >
-          <span className="material-symbols-outlined text-[20px]">delete</span>
+          <span className="material-symbols-outlined text-[18px] md:text-[20px]">delete</span>
         </button>
       </div>
     </div>
   );
 };
 
-const Modal = ({ isOpen, onClose, title, children }) => {
+const Modal = ({isOpen, onClose, title, children}) => {
   if (!isOpen) return null;
 
   return (
@@ -169,7 +173,7 @@ export default function Settings() {
       });
     } else {
       setEditingSource(null);
-      setVideoForm({ name: "", key: "", url: "", description: "" });
+      setVideoForm({name: "", key: "", url: "", description: ""});
     }
     setShowVideoModal(true);
   };
@@ -183,7 +187,7 @@ export default function Settings() {
       });
     } else {
       setEditingSource(null);
-      setDanmakuForm({ name: "", url: "" });
+      setDanmakuForm({name: "", url: ""});
     }
     setShowDanmakuModal(true);
   };
@@ -197,7 +201,7 @@ export default function Settings() {
       addSource(videoForm, "video");
     }
     setShowVideoModal(false);
-    setVideoForm({ name: "", key: "", url: "", description: "" });
+    setVideoForm({name: "", key: "", url: "", description: ""});
     setEditingSource(null);
   };
 
@@ -209,7 +213,7 @@ export default function Settings() {
       addSource(danmakuForm, "danmaku");
     }
     setShowDanmakuModal(false);
-    setDanmakuForm({ name: "", url: "" });
+    setDanmakuForm({name: "", url: ""});
     setEditingSource(null);
   };
 
@@ -276,9 +280,9 @@ export default function Settings() {
   );
 
   return (
-    <div className="w-full px-4 md:px-8 pb-12 max-w-5xl mx-auto">
+    <div className="w-full max-w-5xl mx-auto">
       {/* Video Sources */}
-      <section className="bg-white rounded-2xl shadow-soft p-6 md:p-8 mt-6 border border-gray-100">
+      <section className="bg-white rounded-2xl shadow-soft p-4 md:p-8 mt-6 border border-gray-100">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">视频源管理</h2>
@@ -286,16 +290,16 @@ export default function Settings() {
               管理视频来源，调整优先级和启用状态
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
             <button
               onClick={() => resetToDefaults("video")}
-              className="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors shadow-sm cursor-pointer"
+              className="min-h-[44px] px-4 py-2.5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors shadow-sm cursor-pointer"
             >
               恢复默认
             </button>
             <button
               onClick={() => openVideoModal()}
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-md flex items-center gap-1.5 cursor-pointer"
+              className="min-h-[44px] px-4 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <span className="material-symbols-outlined text-sm font-bold">
                 add
@@ -337,22 +341,22 @@ export default function Settings() {
       </section>
 
       {/* Danmaku Sources */}
-      <section className="bg-white rounded-2xl shadow-soft p-6 md:p-8 mt-8 border border-gray-100">
+      <section className="bg-white rounded-2xl shadow-soft p-4 md:p-8 mt-8 border border-gray-100">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">弹幕源管理</h2>
             <p className="text-gray-500 mt-1">配置弹幕接口，丰富观影体验</p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
             <button
               onClick={() => resetToDefaults("danmaku")}
-              className="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors shadow-sm cursor-pointer"
+              className="min-h-[44px] px-4 py-2.5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors shadow-sm cursor-pointer"
             >
               恢复默认
             </button>
             <button
               onClick={() => openDanmakuModal()}
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-md flex items-center gap-1.5 cursor-pointer"
+              className="min-h-[44px] px-4 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <span className="material-symbols-outlined text-sm font-bold">
                 add
@@ -394,7 +398,7 @@ export default function Settings() {
       </section>
 
       {/* Data Management */}
-      <section className="bg-white rounded-2xl shadow-soft p-6 md:p-8 mt-8 border border-gray-100">
+      <section className="bg-white rounded-2xl shadow-soft p-4 md:p-8 mt-8 border border-gray-100">
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-gray-900">数据管理</h2>
           <p className="text-gray-500 mt-1">
@@ -463,7 +467,7 @@ export default function Settings() {
               placeholder="例如：资源站A"
               value={videoForm.name}
               onChange={(e) =>
-                setVideoForm({ ...videoForm, name: e.target.value })
+                setVideoForm({...videoForm, name: e.target.value})
               }
             />
           </div>
@@ -478,7 +482,7 @@ export default function Settings() {
               placeholder="例如：source_a"
               value={videoForm.key}
               onChange={(e) =>
-                setVideoForm({ ...videoForm, key: e.target.value })
+                setVideoForm({...videoForm, key: e.target.value})
               }
             />
           </div>
@@ -493,7 +497,7 @@ export default function Settings() {
               placeholder="https://api.example.com/vod"
               value={videoForm.url}
               onChange={(e) =>
-                setVideoForm({ ...videoForm, url: e.target.value })
+                setVideoForm({...videoForm, url: e.target.value})
               }
             />
           </div>
@@ -507,7 +511,7 @@ export default function Settings() {
               rows="3"
               value={videoForm.description}
               onChange={(e) =>
-                setVideoForm({ ...videoForm, description: e.target.value })
+                setVideoForm({...videoForm, description: e.target.value})
               }
             />
           </div>
@@ -515,13 +519,13 @@ export default function Settings() {
             <button
               type="button"
               onClick={() => setShowVideoModal(false)}
-              className="flex-1 px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+              className="flex-1 min-h-[44px] px-4 py-2.5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
             >
               取消
             </button>
             <button
               type="submit"
-              className="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
+              className="flex-1 min-h-[44px] px-4 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
             >
               {editingSource ? "保存" : "添加"}
             </button>
@@ -547,7 +551,7 @@ export default function Settings() {
               placeholder="例如：弹幕库A"
               value={danmakuForm.name}
               onChange={(e) =>
-                setDanmakuForm({ ...danmakuForm, name: e.target.value })
+                setDanmakuForm({...danmakuForm, name: e.target.value})
               }
             />
           </div>
@@ -562,7 +566,7 @@ export default function Settings() {
               placeholder="https://api.example.com/danmaku"
               value={danmakuForm.url}
               onChange={(e) =>
-                setDanmakuForm({ ...danmakuForm, url: e.target.value })
+                setDanmakuForm({...danmakuForm, url: e.target.value})
               }
             />
           </div>
@@ -570,13 +574,13 @@ export default function Settings() {
             <button
               type="button"
               onClick={() => setShowDanmakuModal(false)}
-              className="flex-1 px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+              className="flex-1 min-h-[44px] px-4 py-2.5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
             >
               取消
             </button>
             <button
               type="submit"
-              className="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
+              className="flex-1 min-h-[44px] px-4 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
             >
               {editingSource ? "保存" : "添加"}
             </button>

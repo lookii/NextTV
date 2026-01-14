@@ -26,6 +26,3 @@ dist-ssr
 .next
 .next/*
 .env.local
-
-.claude
-.claude/*

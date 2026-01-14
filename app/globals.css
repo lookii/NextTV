@@ -101,7 +101,7 @@ body {
   /* 英文优先使用 Inter，中文回退到 Noto Serif SC */
   font-family: var(--font-inter), var(--font-noto-serif-sc), system-ui,
     sans-serif;
-  @apply bg-background-light text-gray-900 min-h-screen flex flex-col;
+  @apply bg-background-light text-gray-900 min-h-screen flex flex-col overflow-x-hidden;
 }
 
 .selection\:bg-primary::selection {
@@ -194,7 +194,7 @@ body {
 
   /* 扩展hover检测区域，避免鼠标移动到面板时消失 */
   .art-control-volume::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -20px;
     left: -5px;

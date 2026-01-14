@@ -42,7 +42,7 @@ export function EpisodeList({
             </span>
           </div>
           {!episodesCollapsed && (
-            <div className="p-4 pt-6 grid grid-cols-5 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8 gap-2.5 max-h-[500px] overflow-y-auto custom-scrollbar">
+            <div className="p-4 pt-6 grid grid-cols-6 sm:grid-cols-7 md:grid-cols-8 lg:grid-cols-8 gap-2 md:gap-2.5 max-h-[500px] overflow-y-auto custom-scrollbar">
               {episodes.map((_, index) => {
                 const episodeTitle =
                   episodesTitles?.[index] || `第${index + 1}集`;
@@ -50,7 +50,7 @@ export function EpisodeList({
                 return (
                   <div key={index} className="relative group/episode">
                     <button
-                      className={`w-full aspect-square flex items-center justify-center rounded-lg font-medium border transition-all relative text-xs cursor-pointer
+                      className={`w-full aspect-square flex items-center justify-center rounded-lg font-medium border transition-all relative text-xs md:text-sm cursor-pointer
                         ${
                           index === currentEpisodeIndex
                             ? "bg-primary text-white font-semibold shadow-md ring-2 ring-primary/20 border-transparent"

@@ -1,13 +1,25 @@
 # NextTV
 
 <div align="center">
-  <img src="./public/logo.png" alt="NextTV Logo" width="32" height="32" />
+  <img src="./public/logo.png" alt="NextTV Logo" width="50" height="50" />
 
   <p><strong>现代化的视频流媒体播放平台</strong></p>
 
   <p>
     一个功能丰富的视频流媒体应用，支持多源搜索、智能播放、弹幕互动和历史记录管理
   </p>
+</div>
+
+<div align="center">
+
+![Next.js](https://img.shields.io/badge/Next.js-16.1.1-000?logo=nextdotjs)
+![React](https://img.shields.io/badge/React-19.2.3-61dafb?logo=react)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1.18-38bdf8?logo=tailwindcss)
+![ArtPlayer](https://img.shields.io/badge/ArtPlayer-5.3.0-ff6b6b)
+![HLS.js](https://img.shields.io/badge/HLS.js-1.6.15-ec407a)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Docker Ready](https://img.shields.io/badge/Docker-ready-blue?logo=docker)
+
 </div>
 
 ---
@@ -31,7 +43,7 @@
 
 ### 核心框架
 
-- **Next.js** 16.0.0 - React 服务端渲染框架
+- **Next.js** 16.1.1 - React 服务端渲染框架
 - **React** 19.2.3 - 用户界面构建库
 - **Tailwind CSS** 4.1.18 - 现代化 CSS 框架
 
@@ -203,44 +215,6 @@ NextTV/
 
 ---
 
-## 配置指南
-
-### 添加视频源
-
-1. 进入"设置"页面
-2. 在"视频源管理"部分点击"添加视频源"
-3. 填写源名称和 API 地址
-4. 保存后启用该视频源
-
-### 添加弹幕源
-
-1. 进入"设置"页面
-2. 在"弹幕源管理"部分点击"添加弹幕源"
-3. 填写源名称和 API 地址
-4. 保存后启用该弹幕源
-
-### 导入/导出配置
-
-在设置页面，你可以：
-
-- 点击"导出配置"将当前设置保存为 JSON 文件
-- 点击"导入配置"从 JSON 文件恢复设置
-
----
-
-## 数据存储
-
-应用使用浏览器的 LocalStorage 存储以下数据：
-
-- 播放历史记录（最多 20 条）
-- 收藏列表
-- 视频源和弹幕源配置
-- 用户自定义标签
-
-所有数据仅存储在本地，不会上传到服务器。
-
----
-
 ## 开发
 
 ### 启动开发服务器
@@ -263,17 +237,17 @@ npm run build
 
 ---
 
-## 贡献
+## 部署方案
 
-欢迎贡献代码、报告问题或提出建议！
+### 1. 使用 Vercel 部署
 
-1. Fork 本仓库
-2. 创建你的特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交你的改动 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 打开一个 Pull Request
+Fork 项目后，点击 Vercel 按钮即可部署。
 
----
+### 2. 使用 EdgeOne 部署
+
+Fork 项目后，进入 EdgeOne pages 即可部署。
+
+### 3. 其他支持 Next.js 的云函数都可以尝试
 
 ## 许可证
 
@@ -284,7 +258,10 @@ npm run build
 ## 致谢
 
 - [Artplayer](https://github.com/zhw2590582/ArtPlayer) - 优秀的 HTML5 视频播放器
+- [LunaTV](https://github.com/SzeMeng76/LunaTV) - 功能复杂的 Next.js 的播放器
+- [LibreTV](https://github.com/LibreSpark/LibreTV) - 简易但不简单的播放器，本项目修改自 LibreTV
 - [豆瓣](https://movie.douban.com/) - 提供影视推荐数据
+- [CMLiussss](https://github.com/cmliu) - 感谢 CMLiussss 的 douban 代理
 - [Next.js](https://nextjs.org/) - React 服务端渲染框架
 - [Tailwind CSS](https://tailwindcss.com/) - 现代化 CSS 框架
 
