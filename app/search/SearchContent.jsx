@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { MovieCard } from "../../components/MovieCard";
-import { useSettingsStore } from "../../store/useSettingsStore";
-import { searchVideos } from "../../lib/api";
+import { MovieCard } from "@/components/MovieCard";
+import { useSettingsStore } from "@/store/useSettingsStore";
+import { searchVideos } from "@/lib/cmsApi";
 
 export default function SearchContent() {
   const searchParams = useSearchParams();

@@ -1,27 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
-
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @source '../app/**/*.{js,jsx,ts,tsx}';
 @source '../components/**/*.{js,jsx,ts,tsx}';
 @source '../pages/**/*.{js,jsx,ts,tsx,mdx}';
 
 @theme {
-  --color-primary: #FAC638;
+  --color-primary: #fac638;
   --color-primary-dark: #e5b120;
   --color-background-light: #f9fafb;
   --color-surface-light: #ffffff;
   --color-surface-active: #f3f4f6;
   --color-danger: #ef4444;
-  
+
   --radius-default: 0.25rem;
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
   --radius-2xl: 1rem;
   --radius-full: 9999px;
-  
+
   --shadow-soft: 0 2px 10px rgba(0, 0, 0, 0.03);
-  --shadow-card: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
 @utility bg-primary {
@@ -36,9 +34,8 @@
   background-color: var(--color-background-light);
 }
 
-
 .material-symbols-outlined {
-  font-family: 'Material Symbols Outlined';
+  font-family: "Material Symbols Outlined";
   font-weight: normal;
   font-style: normal;
   font-size: 24px;
@@ -49,14 +46,14 @@
   white-space: nowrap;
   word-wrap: normal;
   direction: ltr;
-  font-feature-settings: 'liga';
-  -webkit-font-feature-settings: 'liga';
+  font-feature-settings: "liga";
+  -webkit-font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
 }
 
 .material-symbols-filled {
-  font-family: 'Material Symbols Outlined';
+  font-family: "Material Symbols Outlined";
   font-weight: normal;
   font-style: normal;
   font-size: 24px;
@@ -67,10 +64,10 @@
   white-space: nowrap;
   word-wrap: normal;
   direction: ltr;
-  font-feature-settings: 'liga';
-  -webkit-font-feature-settings: 'liga';
+  font-feature-settings: "liga";
+  -webkit-font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
-  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
 }
 
 .hide-scrollbar::-webkit-scrollbar {
@@ -97,19 +94,77 @@
 }
 
 .toggle-checkbox:checked + .toggle-label {
-  background-color: #FAC638;
+  background-color: #fac638;
 }
 
 body {
   /* 英文优先使用 Inter，中文回退到 Noto Serif SC */
-  font-family: var(--font-inter), var(--font-noto-serif-sc), system-ui, sans-serif;
+  font-family: var(--font-inter), var(--font-noto-serif-sc), system-ui,
+    sans-serif;
   @apply bg-background-light text-gray-900 min-h-screen flex flex-col;
 }
 
 .selection\:bg-primary::selection {
-  background-color: #FAC638;
+  background-color: #fac638;
 }
 
 .selection\:text-white::selection {
   color: white;
+}
+
+/* ============================================
+   ArtPlayer Liquid Glass Plugin Styles
+   毛玻璃效果控制栏插件样式
+   ============================================ */
+
+.artplayer-plugin-liquid-glass.art-control-show {
+  --art-control-height: 42px;
+  --art-control-icon-size: 24px;
+  --art-control-icon-scale: 1.1;
+}
+
+.artplayer-plugin-liquid-glass.art-control-show .art-bottom {
+  align-items: center;
+  background-image: none;
+  padding-bottom: var(--art-padding);
+}
+
+.artplayer-plugin-liquid-glass.art-control-show .art-bottom .art-liquid-glass {
+  border-radius: 8px;
+  backdrop-filter: blur(12px);
+  background-color: rgba(0, 0, 0, 0.25);
+  padding: var(--art-padding) calc(var(--art-padding) * 1.5) 5px;
+}
+
+.artplayer-plugin-liquid-glass.art-control-show .art-settings {
+  bottom: calc(
+    var(--art-control-height) + var(--art-bottom-gap) + var(--art-padding)
+  );
+}
+
+.artplayer-plugin-liquid-glass.art-control-show .art-layer-auto-playback {
+  bottom: calc(
+    var(--art-control-height) + var(--art-bottom-gap) + var(--art-padding) * 4 +
+      10px
+  );
+}
+
+/* 让按钮可自动缩小，防止溢出 */
+.artplayer-plugin-liquid-glass .art-control {
+  flex-shrink: 1 !important;
+  min-width: 32px !important;
+  padding: 0 6px !important;
+}
+
+/* 🔑 关键：完全按照官方CSS，不设置width让容器自适应 */
+.artplayer-plugin-liquid-glass .art-bottom {
+  align-items: center; /* 官方唯一的对齐设置 */
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .artplayer-plugin-liquid-glass .art-control {
+    padding: 0 4px !important;
+    min-width: 28px !important;
+  }
 }

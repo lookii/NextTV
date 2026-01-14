@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { usePlayHistoryStore } from "../store/usePlayHistoryStore";
-import { useFavoritesStore } from "../store/useFavoritesStore";
+import { usePlayHistoryStore } from "@/store/usePlayHistoryStore";
+import { useFavoritesStore } from "@/store/useFavoritesStore";
 import Image from "next/image";
 import Link from "next/link";
 export const Navbar = () => {

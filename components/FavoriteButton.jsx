@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useFavoritesStore } from "../store/useFavoritesStore";
+import { useFavoritesStore } from "@/store/useFavoritesStore";
 
 export function FavoriteButton({ source, id, videoDetail }) {
   const isFavorited = useFavoritesStore((state) => state.isFavorited);

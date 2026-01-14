@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { MovieCard } from "../components/MovieCard";
-import { ContinueWatching } from "../components/ContinueWatching";
-import { usePlayHistoryStore } from "../store/usePlayHistoryStore";
+import { MovieCard } from "@/components/MovieCard";
+import { ContinueWatching } from "@/components/ContinueWatching";
+import { usePlayHistoryStore } from "@/store/usePlayHistoryStore";
 import {
   fetchRecommendations,
   loadUserTags,
@@ -12,7 +12,7 @@ import {
   defaultMovieTags,
   defaultTvTags,
   convertDoubanToMovie,
-} from "../lib/doubanApi";
+} from "@/lib/doubanApi";
 
 export default function Home() {
   const router = useRouter();
@@ -238,7 +238,7 @@ export default function Home() {
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
             <span className="w-1 h-6 bg-primary rounded-full"></span>
-            当下热门 - {currentTag}
+            豆瓣热门 - {currentTag}
           </h2>
 
           {/* Pagination Controls */}

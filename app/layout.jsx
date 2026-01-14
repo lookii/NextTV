@@ -1,6 +1,6 @@
 import "./globals.css";
-import { Navbar } from "../components/Navbar";
-import { Footer } from "../components/Footer";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 import { Noto_Serif_SC, Inter } from "next/font/google";
 
 // 英文字体：Inter（风格类似 Google Sans）
