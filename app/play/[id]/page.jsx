@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Artplayer from "artplayer";
@@ -151,40 +151,43 @@ export default function PlayerPage() {
 
   // 保存播放进度函数
   // 参数 episodeIndex: 可选，指定要保存的集数索引，如果不传则使用当前正在播放的集数
-  const savePlayProgress = (episodeIndex = null) => {
-    if (!artPlayerRef.current || !videoDetailRef.current || !id || !source)
-      return;
+  const savePlayProgress = useCallback(
+    (episodeIndex = null) => {
+      if (!artPlayerRef.current || !videoDetailRef.current || !id || !source)
+        return;
 
-    const currentTime = artPlayerRef.current.currentTime || 0;
-    const duration = artPlayerRef.current.duration || 0;
+      const currentTime = artPlayerRef.current.currentTime || 0;
+      const duration = artPlayerRef.current.duration || 0;
 
-    if (currentTime < 1 || !duration) return;
+      if (currentTime < 1 || !duration) return;
 
-    // 使用传入的集数索引，或者使用正在播放的集数（而不是 state 中可能已更新的集数）
-    const saveEpisodeIndex =
-      episodeIndex !== null ? episodeIndex : playingEpisodeIndexRef.current;
+      // 使用传入的集数索引，或者使用正在播放的集数（而不是 state 中可能已更新的集数）
+      const saveEpisodeIndex =
+        episodeIndex !== null ? episodeIndex : playingEpisodeIndexRef.current;
 
-    try {
-      addPlayRecord({
-        source,
-        id,
-        title: videoDetailRef.current.title,
-        poster: videoDetailRef.current.poster,
-        year: videoDetailRef.current.year,
-        currentEpisodeIndex: saveEpisodeIndex,
-        totalEpisodes: videoDetailRef.current.episodes?.length || 1,
-        currentTime,
-        duration,
-      });
-      console.log("播放进度已保存:", {
-        title: videoDetailRef.current.title,
-        episode: saveEpisodeIndex + 1,
-        progress: `${Math.floor(currentTime)}/${Math.floor(duration)}`,
-      });
-    } catch (err) {
-      console.error("保存播放进度失败:", err);
-    }
-  };
+      try {
+        addPlayRecord({
+          source,
+          id,
+          title: videoDetailRef.current.title,
+          poster: videoDetailRef.current.poster,
+          year: videoDetailRef.current.year,
+          currentEpisodeIndex: saveEpisodeIndex,
+          totalEpisodes: videoDetailRef.current.episodes?.length || 1,
+          currentTime,
+          duration,
+        });
+        console.log("播放进度已保存:", {
+          title: videoDetailRef.current.title,
+          episode: saveEpisodeIndex + 1,
+          progress: `${Math.floor(currentTime)}/${Math.floor(duration)}`,
+        });
+      } catch (err) {
+        console.error("保存播放进度失败:", err);
+      }
+    },
+    [id, source, addPlayRecord]
+  );
 
   // 清理播放器资源
   const cleanupPlayer = () => {
@@ -989,7 +992,7 @@ export default function PlayerPage() {
     return () => {
       document.removeEventListener("keydown", handleKeyboardShortcuts);
     };
-  }, []);
+  }, [savePlayProgress]);
 
   // -------------------------------------------------------------------------
   // 页面卸载前保存播放进度
@@ -1004,7 +1007,7 @@ export default function PlayerPage() {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       savePlayProgress();
     };
-  }, []);
+  }, [savePlayProgress]);
 
   // -------------------------------------------------------------------------
   // 组件卸载时清理播放器
@@ -1123,7 +1126,7 @@ export default function PlayerPage() {
             <div className="flex-1 space-y-5 min-w-0">
               <div>
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
-                  <h1 className="text-2xl md:text-3xl font-bold text-gray-900 break-words">
+                  <h1 className="text-2xl md:text-3xl font-bold text-gray-900 wrap-break-words">
                     {videoDetail.title}
                   </h1>
                   <div className="flex items-center gap-3 shrink-0">
@@ -1175,7 +1178,7 @@ export default function PlayerPage() {
               {videoDetail.desc && (
                 <div className="prose prose-sm max-w-none text-gray-600">
                   <h3 className="text-gray-900 font-semibold mb-1">剧情简介</h3>
-                  <p className="leading-relaxed break-words">
+                  <p className="leading-relaxed wrap-break-words">
                     {videoDetail.desc}
                   </p>
                 </div>

@@ -1,25 +1,21 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useCallback } from "react";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
 
 export function FavoriteButton({ source, id, videoDetail }) {
   const isFavorited = useFavoritesStore((state) => state.isFavorited);
   const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite);
-  const [favoriteState, setFavoriteState] = useState(false);
 
-  // 检查收藏状态
-  useEffect(() => {
-    if (videoDetail && id && source) {
-      setFavoriteState(isFavorited(source, id));
-    }
-  }, [videoDetail, id, source, isFavorited]);
+  // 直接从 store 派生收藏状态，无需本地 state 和 useEffect
+  const favoriteState =
+    videoDetail && id && source ? isFavorited(source, id) : false;
 
   // 处理收藏
   const handleToggleFavorite = useCallback(() => {
     if (!videoDetail || !id || !source) return;
 
-    const newState = toggleFavorite({
+    toggleFavorite({
       source,
       id,
       title: videoDetail.title,
@@ -27,8 +23,6 @@ export function FavoriteButton({ source, id, videoDetail }) {
       genre: videoDetail.genre || "",
       poster: videoDetail.poster,
     });
-
-    setFavoriteState(newState);
   }, [videoDetail, id, source, toggleFavorite]);
 
   return (

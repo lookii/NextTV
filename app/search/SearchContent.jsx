@@ -97,7 +97,7 @@ export default function SearchContent() {
             <h2 className="text-xl text-gray-500 font-medium">
               找到 {filteredResults.length} 个关于{" "}
               <span className="text-gray-900 font-bold text-2xl mx-1">
-                "{query}"
+                &quot;{query}&quot;
               </span>{" "}
               的结果
             </h2>
@@ -120,7 +120,10 @@ export default function SearchContent() {
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
             {filteredResults.map((movie, index) => (
-              <div key={`${movie.source}-${movie.id}`} className="grid-item-animate">
+              <div
+                key={`${movie.source}-${movie.id}`}
+                className="grid-item-animate"
+              >
                 <MovieCard movie={movie} />
               </div>
             ))}
@@ -195,9 +198,7 @@ export default function SearchContent() {
         </div>
       </div>
 
-      <div>
-        {renderContent()}
-      </div>
+      <div>{renderContent()}</div>
     </div>
   );
 }

@@ -1,7 +1,5 @@
 "use client";
-
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, useCallback } from "react";
 import { MovieCard } from "@/components/MovieCard";
 import { SkeletonCard } from "@/components/SkeletonCard";
 import { ContinueWatching } from "@/components/ContinueWatching";
@@ -17,7 +15,6 @@ import {
 } from "@/lib/doubanApi";
 
 export default function Home() {
-  const router = useRouter();
   const [mediaType, setMediaType] = useState("movie");
   const [currentTag, setCurrentTag] = useState("热门");
   const [movies, setMovies] = useState([]);
@@ -37,11 +34,7 @@ export default function Home() {
     setTvTags(loadedTvTags);
   }, []);
 
-  useEffect(() => {
-    loadMovies();
-  }, [mediaType, currentTag, page]);
-
-  const loadMovies = async () => {
+  const loadMovies = useCallback(async () => {
     setLoading(true);
     try {
       const data = await fetchRecommendations(
@@ -58,7 +51,11 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [mediaType, currentTag, page]);
+
+  useEffect(() => {
+    loadMovies();
+  }, [loadMovies]);
 
   const handleMediaTypeChange = (type) => {
     setMediaType(type);

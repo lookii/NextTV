@@ -1,7 +1,7 @@
 "use client";
 
-import {useState} from "react";
-import {useSettingsStore} from "@/store/useSettingsStore";
+import { useState, useEffect } from "react";
+import { useSettingsStore } from "@/store/useSettingsStore";
 
 const SourceItem = ({
   source,
@@ -98,20 +98,53 @@ const SourceItem = ({
           className="min-h-[44px] w-10 md:w-auto p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-all duration-300 cursor-pointer"
           aria-label="删除"
         >
-          <span className="material-symbols-outlined text-[18px] md:text-[20px]">delete</span>
+          <span className="material-symbols-outlined text-[18px] md:text-[20px]">
+            delete
+          </span>
         </button>
       </div>
     </div>
   );
 };
 
-const Modal = ({isOpen, onClose, title, children}) => {
-  if (!isOpen) return null;
+const Modal = ({ isOpen, onClose, title, children }) => {
+  const [shouldRender, setShouldRender] = useState(isOpen);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    const timers = [];
+
+    if (isOpen) {
+      // 使用 setTimeout 避免同步 setState
+      timers.push(setTimeout(() => setShouldRender(true), 0));
+      // 延迟一帧后开始动画
+      timers.push(setTimeout(() => setIsAnimating(true), 20));
+    } else {
+      // 先开始退出动画
+      timers.push(setTimeout(() => setIsAnimating(false), 0));
+      // 等待动画完成后卸载
+      timers.push(setTimeout(() => setShouldRender(false), 300));
+    }
+
+    return () => timers.forEach(clearTimeout);
+  }, [isOpen]);
+
+  if (!shouldRender) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between">
+    <div
+      className={`fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-opacity duration-300 ease-out ${
+        isAnimating ? "opacity-100" : "opacity-0"
+      }`}
+    >
+      <div
+        className={`bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto transition-all duration-300 ease-out ${
+          isAnimating
+            ? "opacity-100 scale-100 translate-y-0"
+            : "opacity-0 scale-95 translate-y-4"
+        }`}
+      >
+        <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between rounded-t-2xl">
           <h3 className="text-xl font-bold text-gray-900">{title}</h3>
           <button
             onClick={onClose}
@@ -173,7 +206,7 @@ export default function Settings() {
       });
     } else {
       setEditingSource(null);
-      setVideoForm({name: "", key: "", url: "", description: ""});
+      setVideoForm({ name: "", key: "", url: "", description: "" });
     }
     setShowVideoModal(true);
   };
@@ -187,7 +220,7 @@ export default function Settings() {
       });
     } else {
       setEditingSource(null);
-      setDanmakuForm({name: "", url: ""});
+      setDanmakuForm({ name: "", url: "" });
     }
     setShowDanmakuModal(true);
   };
@@ -201,7 +234,7 @@ export default function Settings() {
       addSource(videoForm, "video");
     }
     setShowVideoModal(false);
-    setVideoForm({name: "", key: "", url: "", description: ""});
+    setVideoForm({ name: "", key: "", url: "", description: "" });
     setEditingSource(null);
   };
 
@@ -213,7 +246,7 @@ export default function Settings() {
       addSource(danmakuForm, "danmaku");
     }
     setShowDanmakuModal(false);
-    setDanmakuForm({name: "", url: ""});
+    setDanmakuForm({ name: "", url: "" });
     setEditingSource(null);
   };
 
@@ -467,7 +500,7 @@ export default function Settings() {
               placeholder="例如：资源站A"
               value={videoForm.name}
               onChange={(e) =>
-                setVideoForm({...videoForm, name: e.target.value})
+                setVideoForm({ ...videoForm, name: e.target.value })
               }
             />
           </div>
@@ -482,7 +515,7 @@ export default function Settings() {
               placeholder="例如：source_a"
               value={videoForm.key}
               onChange={(e) =>
-                setVideoForm({...videoForm, key: e.target.value})
+                setVideoForm({ ...videoForm, key: e.target.value })
               }
             />
           </div>
@@ -497,7 +530,7 @@ export default function Settings() {
               placeholder="https://api.example.com/vod"
               value={videoForm.url}
               onChange={(e) =>
-                setVideoForm({...videoForm, url: e.target.value})
+                setVideoForm({ ...videoForm, url: e.target.value })
               }
             />
           </div>
@@ -511,7 +544,7 @@ export default function Settings() {
               rows="3"
               value={videoForm.description}
               onChange={(e) =>
-                setVideoForm({...videoForm, description: e.target.value})
+                setVideoForm({ ...videoForm, description: e.target.value })
               }
             />
           </div>
@@ -551,7 +584,7 @@ export default function Settings() {
               placeholder="例如：弹幕库A"
               value={danmakuForm.name}
               onChange={(e) =>
-                setDanmakuForm({...danmakuForm, name: e.target.value})
+                setDanmakuForm({ ...danmakuForm, name: e.target.value })
               }
             />
           </div>
@@ -566,7 +599,7 @@ export default function Settings() {
               placeholder="https://api.example.com/danmaku"
               value={danmakuForm.url}
               onChange={(e) =>
-                setDanmakuForm({...danmakuForm, url: e.target.value})
+                setDanmakuForm({ ...danmakuForm, url: e.target.value })
               }
             />
           </div>
