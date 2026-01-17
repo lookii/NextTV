@@ -11,7 +11,7 @@ export const useSettingsStore = create(
       danmakuSources: DEFAULT_DANMAKU_SOURCES,
 
       // 播放器配置
-      blockAdEnabled: true,
+      blockAdEnabled: false,
       skipConfig: { enable: false, intro_time: 0, outro_time: 0 },
 
       // 设置去广告开关

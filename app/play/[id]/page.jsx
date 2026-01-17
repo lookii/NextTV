@@ -69,6 +69,7 @@ export default function PlayerPage() {
     try {
       addPlayRecord({
         source,
+        source_name: videoDetail.source,
         id,
         title: videoDetail.title,
         poster: videoDetail.poster,

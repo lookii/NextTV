@@ -5,7 +5,6 @@ import { formatTimeRemaining } from "@/lib/util";
 
 export function ContinueWatching({ playHistory }) {
   const router = useRouter();
-
   if (!playHistory || playHistory.length === 0) {
     return null;
   }
@@ -47,7 +46,13 @@ export function ContinueWatching({ playHistory }) {
                   alt={record.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
-
+                {record.source && (
+                  <div className="absolute top-1 left-1 z-10">
+                    <span className="bg-primary/90 text-white text-xs px-2 py-1 rounded-md font-medium shadow-sm">
+                      {record.source_name || record.source}
+                    </span>
+                  </div>
+                )}
                 {/* 播放图标 */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
                   <div className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-300">

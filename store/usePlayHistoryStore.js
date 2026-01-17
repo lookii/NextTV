@@ -13,6 +13,7 @@ export const usePlayHistoryStore = create(
       addPlayRecord: (record) => set((state) => {
         const {
           source,
+          source_name,
           id,
           title,
           poster,
@@ -34,6 +35,7 @@ export const usePlayHistoryStore = create(
         // 创建新记录
         const newRecord = {
           source,
+          source_name,
           id,
           title,
           poster,

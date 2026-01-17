@@ -98,7 +98,7 @@ export function EpisodeList({ episodes, episodesTitles, currentEpisodeIndex, onE
                     onClick={() => onEpisodeClick(originalIndex)}
                   >
                     {displayIndex}
-                    {isCurrent && <span className="absolute top-0 right-0 -mt-1 -mr-1 w-2 h-2 bg-red-500 rounded-full border border-white dark:border-slate-800"></span>}
+                    {isCurrent && <span className="absolute top-0 right-0 -mt-1 -mr-1 flex size-3"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span><span className="relative inline-flex size-3 rounded-full bg-sky-500"></span></span>}
                   </button>
                   {/* Hover Tooltip */}
                   <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-slate-900 text-white text-xs rounded whitespace-nowrap opacity-0 invisible group-hover/episode:opacity-100 group-hover/episode:visible transition-all duration-200 pointer-events-none z-50">

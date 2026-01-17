@@ -218,11 +218,16 @@ export function Navbar() {
                               {formatTimeShort(record.currentTime)} /{" "}
                               {formatTimeShort(record.duration)}
                             </p>
-                            <div className="flex items-center justify-between mt-2">
+                            <div className="flex items-center justify-between">
                               <span className="text-xs text-gray-400">
                                 {Math.floor(record.progress)}%
                               </span>
                             </div>
+                            {record.source_name && (
+                              <p className="text-xs text-gray-400 mt-1">
+                                {record.source_name}
+                              </p>
+                            )}
                           </div>
 
                           <button
