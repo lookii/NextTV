@@ -3,18 +3,36 @@ import { getVideoDetail } from "@/lib/cmsApi";
 import { testStreamUrl } from "@/lib/clientSpeedTest";
 
 // Global cache to store speed test results by key (videoId + sourceKey)
+// Global cache to store speed test results by key (videoId + sourceKey)
+// Value format: { data: result, timestamp: number }
 const resultCache = new Map();
+const CACHE_DURATION = 60 * 1000; // 1 minute
 
-export const SpeedTestBadge = React.memo(function SpeedTestBadge({ videoId, sourceKey, sourceUrl }) {
+export function SpeedTestBadge({ videoId, sourceKey, sourceUrl }) {
   const cacheKey = `${videoId}-${sourceKey}`;
-  const [loading, setLoading] = useState(!resultCache.has(cacheKey));
-  const [result, setResult] = useState(resultCache.get(cacheKey) || null);
+  
+  const getCachedResult = () => {
+    if (resultCache.has(cacheKey)) {
+      const cached = resultCache.get(cacheKey);
+      if (Date.now() - cached.timestamp < CACHE_DURATION) {
+        return cached.data;
+      } else {
+        resultCache.delete(cacheKey);
+      }
+    }
+    return null;
+  };
+
+  const initialResult = getCachedResult();
+  const [loading, setLoading] = useState(!initialResult);
+  const [result, setResult] = useState(initialResult);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // If we already have a cached result, don't run the test again
-    if (resultCache.has(cacheKey)) {
-        setResult(resultCache.get(cacheKey));
+    // Check cache again in effect in case it was populated by another component instance
+    const cached = getCachedResult();
+    if (cached) {
+        setResult(cached);
         setLoading(false);
         return;
     }
@@ -37,8 +55,11 @@ export const SpeedTestBadge = React.memo(function SpeedTestBadge({ videoId, sour
         // 3. Run speed test client-side
         const testResult = await testStreamUrl(lastEpisodeUrl, "GET", 30000, true);
         
-        // Cache the result
-        resultCache.set(cacheKey, testResult);
+        // Cache the result with timestamp
+        resultCache.set(cacheKey, {
+            data: testResult,
+            timestamp: Date.now()
+        });
 
         if (mounted) {
            setResult(testResult);
@@ -116,4 +137,4 @@ export const SpeedTestBadge = React.memo(function SpeedTestBadge({ videoId, sour
       </div>
     </div>
   );
-});
+}
