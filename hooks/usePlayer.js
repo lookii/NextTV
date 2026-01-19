@@ -252,10 +252,11 @@ export function usePlayer({
             const hls = new Hls({
               debug: false,
               enableWorker: true,
-              lowLatencyMode: true,
-              maxBufferLength: 30,
-              backBufferLength: 30,
-              maxBufferSize: 60 * 1000 * 1000,
+              lowLatencyMode: false,
+              maxBufferLength: 10,
+              backBufferLength: 5,
+              maxBufferSize: 80 * 1000 * 1000,
+              liveSyncDurationCount: 3,
               loader: blockAdEnabledRef.current
                 ? CustomHlsJsLoader
                 : Hls.DefaultConfig.loader,
