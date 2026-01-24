@@ -57,9 +57,10 @@ const checkVideoUpgrade = unstable_cache(
         throw new Error("获取到的详情内容无效");
       }
 
-      const episodeLength = data.list.map((videoDetail) => {
-        return parseSingleVideo(videoDetail);
-      });
+      const episodeLength = data.list.map((videoDetail) => ({
+        id: videoDetail.vod_id.toString(),
+        length: parseSingleVideo(videoDetail),
+      }));
 
       return {
         episodeLength,
