@@ -83,7 +83,7 @@ export function usePlayerDirect({
         poster:
           searchPoster ||
           "https://tncache1-f1.v3mh.com/image/2026/02/18/f46c4dc098bae2bc83090d709b42d00f.jpg",
-        year: 0,
+        year: new Date().getFullYear(),
         currentEpisodeIndex: 0,
         totalEpisodes: 1,
         currentTime,
@@ -281,7 +281,7 @@ export function usePlayerDirect({
       artPlayerRef.current.once("video:canplay", () => {
         const playRecord = usePlayHistoryStore
           .getState()
-          .getPlayRecord(currentUrl, 0);
+          .getPlayRecord(currentUrl, '直链');
         const initialTime = playRecord?.currentTime || 0;
         if (initialTime > 0) {
           try {

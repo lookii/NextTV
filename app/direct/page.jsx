@@ -22,8 +22,9 @@ function DirectPlayerContent() {
   const searchParams = useSearchParams();
   const playerurl = searchParams.get("playerurl");
   const title = searchParams.get("title") || "";
-  const poster = searchParams.get("poster") || "";
 
+  const [searchTitle, setSearchTitle] = useState(null);
+  const [searchPoster, setSearchPoster] = useState(null);
   const [searchEpisodeId, setSearchEpisodeId] = useState(null);
   const [panelCollapsed, setPanelCollapsed] = useState(false);
   const [fixedPlayerHeight, setFixedPlayerHeight] = useState(null);
@@ -39,6 +40,11 @@ function DirectPlayerContent() {
   const handleExpand = useCallback(() => {
     setPanelCollapsed(false);
     setFixedPlayerHeight(null);
+  }, []);
+
+  const handleAnimeSelect = useCallback((animeTitle, imageUrl) => {
+    setSearchTitle(animeTitle);
+    setSearchPoster(imageUrl);
   }, []);
 
   const handleEpisodeSelect = (episodeId) => {
@@ -80,8 +86,8 @@ function DirectPlayerContent() {
           >
             <VideoPlayerDirect
               currentUrl={playerurl}
-              searchTitle={title}
-              searchPoster={poster}
+              searchTitle={searchTitle}
+              searchPoster={searchPoster}
               searchEpisodeId={searchEpisodeId}
             />
             {panelCollapsed && (
@@ -112,6 +118,7 @@ function DirectPlayerContent() {
           <DanmakuSearch
             initialTitle={title}
             onEpisodeSelect={handleEpisodeSelect}
+            onAnimeSelect={handleAnimeSelect}
             onCollapse={handleCollapse}
           />
         </div>

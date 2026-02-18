@@ -9,7 +9,7 @@ import {
   MaterialSymbolsChevronRightRounded,
 } from "@/components/icons";
 
-export function DanmakuSearch({ initialTitle, onEpisodeSelect, onCollapse }) {
+export function DanmakuSearch({ initialTitle, onEpisodeSelect, onAnimeSelect, onCollapse }) {
   const [searchTerm, setSearchTerm] = useState(initialTitle || "");
   const [animes, setAnimes] = useState([]);
   const [selectedAnime, setSelectedAnime] = useState(null);
@@ -53,6 +53,7 @@ export function DanmakuSearch({ initialTitle, onEpisodeSelect, onCollapse }) {
     setLoadingEpisodes(true);
     setEpisodes([]);
     setSelectedEpisodeId(null);
+    onAnimeSelect?.(anime.animeTitle, anime.imageUrl);
 
     try {
       const result = await getEpisodes(enabledSource.url, anime.animeId);
