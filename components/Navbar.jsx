@@ -13,6 +13,8 @@ import {
   MaterialSymbolsSettingsOutlineRounded,
   MaterialSymbolsDeleteOutlineRounded,
   MaterialSymbolsVideoLibraryOutlineRounded,
+  MaterialSymbolsDirectionsAltOutlineRounded,
+  MaterialSymbolsPlayArrowRounded,
   SimpleIconsGithub,
 } from "@/components/icons";
 
@@ -21,8 +23,12 @@ export function Navbar() {
   const pathname = usePathname();
   const [showHistoryDropdown, setShowHistoryDropdown] = useState(false);
   const [showFavoritesDropdown, setShowFavoritesDropdown] = useState(false);
+  const [showDirectPlay, setShowDirectPlay] = useState(false);
+  const [directPlayUrl, setDirectPlayUrl] = useState("");
+  const [directPlayTitle, setDirectPlayTitle] = useState("");
   const dropdownRef = useRef(null);
   const favoritesDropdownRef = useRef(null);
+  const directPlayRef = useRef(null);
 
   // 获取播放历史
   const playHistory = usePlayHistoryStore((state) => state.playHistory);
@@ -50,21 +56,36 @@ export function Navbar() {
       ) {
         setShowFavoritesDropdown(false);
       }
+      if (
+        directPlayRef.current &&
+        !directPlayRef.current.contains(event.target)
+      ) {
+        setShowDirectPlay(false);
+      }
     };
 
-    if (showHistoryDropdown || showFavoritesDropdown) {
+    if (showHistoryDropdown || showFavoritesDropdown || showDirectPlay) {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showHistoryDropdown, showFavoritesDropdown]);
+  }, [showHistoryDropdown, showFavoritesDropdown, showDirectPlay]);
 
 
   const handleHistoryClick = (record) => {
     setShowHistoryDropdown(false);
-    router.push(`/play/${record.id}?source=${record.source}`);
+    if (record.source_name === "直链播放") {
+      const params = new URLSearchParams({
+        playerurl: record.source,
+        title: record.title || "",
+        poster: record.poster || "",
+      });
+      router.push(`/direct?${params.toString()}`);
+    } else {
+      router.push(`/play/${record.id}?source=${record.source}`);
+    }
   };
 
   const handleDeleteHistory = (e, record) => {
@@ -94,6 +115,18 @@ export function Navbar() {
       clearFavorites();
       setShowFavoritesDropdown(false);
     }
+  };
+
+  const handleDirectPlay = () => {
+    if (!directPlayUrl.trim()) return;
+    const params = new URLSearchParams({
+      playerurl: directPlayUrl.trim(),
+      title: directPlayTitle.trim(),
+    });
+    setShowDirectPlay(false);
+    setDirectPlayUrl("");
+    setDirectPlayTitle("");
+    router.push(`/direct?${params.toString()}`);
   };
 
   return (
@@ -153,6 +186,59 @@ export function Navbar() {
               viewBox="0 0 24 24"
             />
           </Link>
+
+          {/* Direct Play Dropdown */}
+          <div className="static md:relative" ref={directPlayRef}>
+            <button
+              aria-label="直链播放"
+              className={`flex items-center justify-center size-10 rounded-full hover:bg-gray-100 text-gray-500 hover:text-gray-900 transition-colors cursor-pointer btn-press ${showDirectPlay ? "bg-gray-100 text-gray-900" : ""}`}
+              onClick={() => setShowDirectPlay(!showDirectPlay)}
+            >
+              <MaterialSymbolsDirectionsAltOutlineRounded className="text-2xl" />
+            </button>
+
+            {showDirectPlay && (
+              <div className="absolute left-0 right-0 md:left-auto md:right-0 top-full mt-2 w-full md:w-80 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 dropdown-enter">
+                <div className="p-4 border-b border-gray-100 bg-gray-50">
+                  <h3 className="font-bold text-gray-900">直链播放</h3>
+                  <p className="text-xs text-gray-500 mt-0.5">输入视频链接直接播放</p>
+                </div>
+                <div className="p-4 space-y-3">
+                  <div>
+                    <label className="text-xs font-medium text-gray-600 mb-1 block">播放链接</label>
+                    <input
+                      type="text"
+                      value={directPlayUrl}
+                      onChange={(e) => setDirectPlayUrl(e.target.value)}
+                      onKeyDown={(e) => e.key === "Enter" && handleDirectPlay()}
+                      placeholder="输入 m3u8 或视频链接..."
+                      className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                      autoFocus
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-gray-600 mb-1 block">标题 (可选)</label>
+                    <input
+                      type="text"
+                      value={directPlayTitle}
+                      onChange={(e) => setDirectPlayTitle(e.target.value)}
+                      onKeyDown={(e) => e.key === "Enter" && handleDirectPlay()}
+                      placeholder="输入视频标题..."
+                      className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                    />
+                  </div>
+                  <button
+                    onClick={handleDirectPlay}
+                    disabled={!directPlayUrl.trim()}
+                    className="w-full py-2 bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <MaterialSymbolsPlayArrowRounded className="text-[18px]" />
+                    播放
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* History Dropdown */}
           <div className="static md:relative" ref={dropdownRef}>

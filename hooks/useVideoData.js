@@ -1,8 +1,8 @@
-import {useState, useEffect} from "react";
-import {useSettingsStore} from "@/store/useSettingsStore";
-import {getVideoDetail} from "@/lib/cmsApi";
-import {scrapeDoubanDetails} from "@/lib/getDouban";
-import {usePlayHistoryStore} from "@/store/usePlayHistoryStore";
+import { useState, useEffect } from "react";
+import { useSettingsStore } from "@/store/useSettingsStore";
+import { getVideoDetail } from "@/lib/cmsApi";
+import { scrapeDoubanDetails } from "@/lib/getDouban";
+import { usePlayHistoryStore } from "@/store/usePlayHistoryStore";
 
 export function useVideoData(id, source, setCurrentEpisodeIndex) {
   const [videoDetail, setVideoDetail] = useState(null);
@@ -48,7 +48,7 @@ export function useVideoData(id, source, setCurrentEpisodeIndex) {
           if (doubanResult.code === 200 && doubanResult.data) {
             actorsData = doubanResult.data.map((actor) => ({
               ...actor,
-              avatar: actor.avatar.replace(
+              avatar: doubanImageProxy === 'server' ? `/api/douban/image?url=${encodeURIComponent(actor.avatar)}` : actor.avatar.replace(
                 /img\d+\.doubanio\.com/g,
                 doubanImageProxy,
               ),

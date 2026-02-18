@@ -86,7 +86,16 @@ export function ContinueWatching({ playHistory }) {
   }
 
   function handlePlayClick(record) {
-    router.push(`/play/${record.id}?source=${record.source}`);
+    if (record.source_name === "直链播放") {
+      const params = new URLSearchParams({
+        playerurl: record.source,
+        title: record.title || "",
+        poster: record.poster || "",
+      });
+      router.push(`/direct?${params.toString()}`);
+    } else {
+      router.push(`/play/${record.id}?source=${record.source}`);
+    }
   }
 
   return (
